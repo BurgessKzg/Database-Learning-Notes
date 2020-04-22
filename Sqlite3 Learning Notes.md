@@ -88,8 +88,128 @@
 
 ### 4.2.1. ".help"命令
 
+> 帮助
+
 ### 4.2.2. ".quit"命令
 
+> 退出
 
+### 4.2.3. ".exit"命令
+
+> 退出
+
+### 4.2.4. ".schema"命令
+
+> 查看表格的结构图；
 
 ## 4.3. sql命令
+
+### 4.3.1. 创建表格
+
+**格式：`create table stu(id Integer,name char,score float);`**
+**格式：`create table stu(id integer,name string,score float);`**
+  - 创建一张名为"stu"的表格；
+  - sql命令需要以";"结尾；
+  - 表格中有Integer类型的id字段；
+  - 表格中有char类型的name字段(char、string都可以)；
+
+### 4.3.2. 插入记录
+
+**格式：`insert into stu VALUES (001,"张三",80);`** 
+**格式：`insert into stu VALUES (002,'李四',90);`**
+**格式：`insert into stu (id,score)VALUES (003,95);`** 
+**格式：`insert into stu (name,score)VALUES (98,'马六');`** 
+  - 向表格"stu"中插入一条记录；
+  - 字符串可以使用单引号(')或双引号(")括起来；
+  - 某条记录只插入部分字段时，需要在"values"关键字前指定插入哪些字段；
+  - 指定字段和插入数据类型不匹配值会错误插入，sqlite不会做类型检查；
+
+### 4.3.3. 查询记录
+
+**格式：`select * from stu;`**
+**格式：`select name from stu;`**
+**格式：`select id,score from stu;`**
+**格式：`SELECT * from stu where id = 1;`**
+**格式：`SELECT * from stu where id=2 and name = '李四';`**
+  - "*"代表查看全部字段；
+  - 也可以指定查看部分字段；
+  - 支持条件查询，使用关键字：where；
+  - 多条件查询，条件之间可用关键字：and/AND、or/OR
+
+    ```SQL
+      sqlite> select * from stu;
+      1|张三|80.0
+      2|李四|90.0
+      3||95.0
+      |98|马六
+      sqlite> select score from stu;
+      80.0
+      90.0
+      95.0
+      马六
+      sqlite> SELECT id,score from stu;
+      1|80.0
+      2|90.0
+      3|95.0
+      |马六
+      sqlite> SELECT * from stu where id = 1;
+      1|张三|80.0
+      sqlite> SELECT * from stu where id=1;
+      1|张三|80.0
+      sqlite> SELECT * from stu where id=2 and name = '张三';
+      sqlite> SELECT * from stu where id=2 and name = '李四';
+      2|李四|90.0
+      sqlite>
+    ```
+
+### 4.3.4. 删除记录
+
+**格式：`delete from stu;`**
+**格式：`delete from stu where id=001;`**
+  - 不加条件判断，会删除整个表格；
+  - 可以使用关键字：AND、OR来确定要删除的记录；
+
+    ```SQL
+      sqlite> SELECT * from stu;
+      1|zhangsan|80.0
+      2|王五|66.0
+      3||95.0
+      |98|马六
+      sqlite> DELETE from stu where id= 3;
+      sqlite> SELECT * from stu;
+      1|zhangsan|80.0
+      2|王五|66.0
+      |98|马六
+      sqlite> DELETE from stu;
+      sqlite> SELECT * from stu;
+      sqlite> 
+    ```
+
+### 4.3.5. 更新记录
+
+**格式：`update stu set name='zhangsan' where id =01;`**
+**格式：`update stu set name='王五',score = 66 where id =2;`**
+  - 通过条件可以更新指定记录；
+  - 可以更新记录的多个字段；
+
+    ```SQL
+      sqlite> SELECT * from stu;
+      1|张三|80.0
+      2|李四|90.0
+      3||95.0
+      |98|马六
+      sqlite> update stu set name='zhangsan' where id =01;
+      sqlite> SELECT * from stu;
+      1|zhangsan|80.0
+      2|李四|90.0
+      3||95.0
+      |98|马六
+      sqlite> update stu set name='王五',score = 66 where id =2;
+      sqlite> SELECT * from stu;
+      1|zhangsan|80.0
+      2|王五|66.0
+      3||95.0
+      |98|马六
+      sqlite> 
+    ```
+

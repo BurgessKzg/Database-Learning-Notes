@@ -102,6 +102,14 @@
 
 > 查看表格的结构图；
 
+### 4.2.5. ".database"命令
+
+> 查看打开的数据库，包括名字和路径；
+
+### 4.2.6. ".table"命令
+
+> 查看当前打开的数据库中的表格；
+
 ## 4.3. sql命令
 
 ### 4.3.1. 创建表格
@@ -212,4 +220,62 @@
       |98|马六
       sqlite> 
     ```
+
+### 4.3.6. 添加字段
+
+**格式：`alter table stu add column address char`**
+  - 向表格stu中添加一个名称为"address"，类型为char的字段(列)；
+
+### 4.3.7. 删除表格
+
+**表格：`drop table stu`**
+  - 删除名字为"stu"的表格；
+
+### 4.3.8. 删除字段
+
+**顺序1：`CREATE TABLE stuTemp as SELECT id,name from stu;`**
+**顺序2：`drop TABLE stu;`**
+**顺序3：`alter TABLE stuTemp RENAME to stu;`**
+- sqlite不支持直接删除一列，可以通过以下方式实现删除一列：
+  - 1.创建一张新的表；
+  - 2.删除原有的表；
+  - 3.将新表的名字改为原有的表的名字；
+
+    ```SQL
+      sqlite> select * FROM stu;
+      1|张三|60.0
+      2|李四|70.0
+      sqlite> CREATE TABLE stuTemp as SELECT id,name from stu;
+      sqlite> SELECT * from stuTemp;
+      1|张三
+      2|李四
+      sqlite> drop TABLE stu;
+      sqlite> alter TABLE stuTemp RENAME to stu;
+      sqlite> .schema
+      CREATE TABLE IF NOT EXISTS "stu"(id INT,name NUM);
+      sqlite> .table
+      stu
+    ```
+
+# 5. Sqlite编程接口
+
+
+
+
+
+- sqlite_open为什么要使用一个二级指针？
+- UIF-8格式？还有哪些？
+- sqlite_errmsg函数返回字符串首地址是怎么实现？不会造成内存泄漏？strerror函数呢？某些返回结构体指针的函数内部怎么实现？
+  - 1. 直接返回结构体，这种方式只是返回局部变量的一个拷贝。
+  - 2. 可以在函数体内用new 一个结构体，然后返回它的指针，之后在外部对这块内存进行管理。
+  - 3. 使用引用参数，如3楼所说，这种方式会显得比较有好，比起第二种对内存管理要方便些
+- 字符串常量存放在程序的静态数据区，那静态数据区是否占用内存，过多的定义字符串常量是不是很浪费内存？
+  ```C
+    const char* Func(void)
+    {
+        const char* p = "hello world";//字符串常量存放在程序的静态数据区
+        return p;
+    }
+  ```
+
 

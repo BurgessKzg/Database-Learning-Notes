@@ -259,10 +259,22 @@
 
 # 5. Sqlite编程接口
 
+---
 
+**链接**
+[官方链接](https://www.sqlite.org/c3ref/funclist.html)
+[菜鸟教程](https://www.runoob.com/sqlite/sqlite-tutorial.html)
 
+---
 
+- sqlite3_open
+- sqlite3_close
+- sqlite3_errmsg
+- sqlite3_exec
 
+---
+
+- sqlite3_get_table使用之后，需要释放table的空间？
 - sqlite_open为什么要使用一个二级指针？
 - UIF-8格式？还有哪些？
 - sqlite_errmsg函数返回字符串首地址是怎么实现？不会造成内存泄漏？strerror函数呢？某些返回结构体指针的函数内部怎么实现？
